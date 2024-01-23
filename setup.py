@@ -2,10 +2,12 @@
 
 from setuptools import find_packages
 from setuptools import setup
+from setuptools import Extension
 from setuptools.command.test import test as TestCommand
 import mpd
 import os
 import sys
+from Cython.Build import cythonize
 
 
 if sys.version_info[0] == 2:
@@ -68,6 +70,14 @@ setup(
     version=VERSION,
     python_requires='>=3.6',
     description="A Python MPD client library",
+
+    ext_modules=cythonize(
+                        [ Extension("mpd", ["mpd/__init__.py", "mpd/base.py", "mpd/asyncio.py"]) ],
+                        compiler_directives={
+                            "language_level":3
+                        }
+                    ),
+
     long_description=read('README.rst'),
     long_description_content_type='text/x-rst',
     classifiers=CLASSIFIERS,
