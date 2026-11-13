@@ -3,7 +3,6 @@
 from setuptools import find_packages
 from setuptools import setup
 from setuptools import Extension
-from setuptools.command.test import test as TestCommand
 import mpd
 import os
 import sys
@@ -44,21 +43,6 @@ GNU Lesser General Public License for more details.  You should have received a 
 along with python-mpd2.  If not, see <http://www.gnu.org/licenses/>.\
 """
 
-
-class Tox(TestCommand):
-
-    def finalize_options(self):
-        TestCommand.finalize_options(self)
-        self.test_args = []
-        self.test_suite = True
-
-    def run_tests(self):
-        # import here, cause outside the eggs aren't loaded
-        import tox
-        errno = tox.cmdline(self.test_args)
-        sys.exit(errno)
-
-
 def read(fname):
     with open(os.path.join(os.path.dirname(__file__),  fname),
               encoding="utf8") as fd:
@@ -88,14 +72,6 @@ setup(
     packages=find_packages(),
     zip_safe=True,
     keywords=["mpd"],
-    test_suite="mpd.tests",
-    tests_require=[
-        'tox',
-        'Twisted'
-    ],
-    cmdclass={
-        'test': Tox
-    },
     extras_require={
         'twisted': ['Twisted']
     }
